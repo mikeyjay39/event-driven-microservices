@@ -264,6 +264,16 @@ CREATE INDEX idxgv5k1v2mh6frxuy5c0hgbau94 ON public.association_value_entry USIN
 
 CREATE INDEX idxk45eqnxkgd8hpdn6xixn8sgft ON public.association_value_entry USING btree (saga_type, association_key, association_value);
 
+create table public.account
+(
+    account_number varchar(255),
+    balance        numeric(19, 2),
+    user_id        varchar(255)
+);
+
+alter table public.account
+    owner to postgres;
+
 
 --
 -- PostgreSQL database dump complete
@@ -529,6 +539,22 @@ CREATE INDEX idxgv5k1v2mh6frxuy5c0hgbau94 ON public.association_value_entry USIN
 --
 
 CREATE INDEX idxk45eqnxkgd8hpdn6xixn8sgft ON public.association_value_entry USING btree (saga_type, association_key, association_value);
+
+create table public.app_user
+(
+    id          bigserial
+        constraint app_user_pk
+            primary key,
+    "user_name"  varchar(255),
+    "first_name" varchar(255),
+    "last_name"  varchar(255)
+);
+
+alter table public.app_user
+    owner to postgres;
+
+create unique index app_user_username_uindex
+    on public.app_user ("user_name");
 
 
 --

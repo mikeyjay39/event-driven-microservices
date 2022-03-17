@@ -2,14 +2,14 @@ package com.jeszenka.eventdrivenmicroservices.accountservice.command.model;
 
 import com.jeszenka.eventdrivenmicroservices.accountservice.command.commands.CreateAccountCommand;
 import com.jeszenka.eventdrivenmicroservices.accountservice.command.commands.UpdateAccountCommand;
-import com.jeszenka.eventdrivenmicroservices.accountservice.core.events.AccountCreatedEvent;
-import com.jeszenka.eventdrivenmicroservices.accountservice.core.events.AccountUpdatedEvent;
+import com.jeszenka.eventdrivenmicroservices.events.events.AccountCreatedEvent;
+import com.jeszenka.eventdrivenmicroservices.events.events.AccountUpdatedEvent;
+import lombok.Getter;
+import lombok.Setter;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
-import org.axonframework.modelling.command.AggregateCreationPolicy;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
-import org.axonframework.modelling.command.CreationPolicy;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import javax.persistence.Entity;
@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 @Aggregate
 @Entity
 @Table(name = "account")

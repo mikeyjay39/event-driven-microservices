@@ -1,0 +1,6 @@
+tenants:
+  datasource: '{tenant1:
+  {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant1", driver:"org.postgresql.Driver"},
+  tenant2:
+  {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant2", driver:"org.postgresql.Driver"}
+  }'

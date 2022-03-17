@@ -1,9 +1,9 @@
-package com.jeszenka.eventdrivenmicroservices.accountservice.query.handler;
+package com.jeszenka.eventdrivenmicroservices.userservice.query.handler;
 
-import com.jeszenka.eventdrivenmicroservices.accountservice.query.model.Account;
-import com.jeszenka.eventdrivenmicroservices.accountservice.query.queries.FindAllAccountsQuery;
 import com.jeszenka.eventdrivenmicroservices.events.events.AccountCreatedEvent;
 import com.jeszenka.eventdrivenmicroservices.events.events.AccountUpdatedEvent;
+import com.jeszenka.eventdrivenmicroservices.userservice.query.model.Account;
+import com.jeszenka.eventdrivenmicroservices.userservice.query.queries.FindAllAccountsQuery;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -39,4 +39,5 @@ public class AccountEventHandler {
 	public List<Account> handle(FindAllAccountsQuery query) {
 		return List.copyOf(accounts.values());
 	}
+
 }
