@@ -11,7 +11,7 @@ import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Service;
 
 @Service
-@ProcessingGroup("userEventHandler")
+@ProcessingGroup("kafka-group")
 @Slf4j
 @RequiredArgsConstructor
 public class UserEventHandler {

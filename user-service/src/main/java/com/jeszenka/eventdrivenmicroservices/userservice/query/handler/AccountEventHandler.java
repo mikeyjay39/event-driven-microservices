@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@ProcessingGroup("accountEventHandler")
+@ProcessingGroup("kafka-group")
 public class AccountEventHandler {
 
 	private final Map<String, Account> accounts = new HashMap<>();

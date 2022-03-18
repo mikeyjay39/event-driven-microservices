@@ -4,3 +4,28 @@ tenants:
   tenant2:
   {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant2", driver:"org.postgresql.Driver"}
   }'
+axon:
+#  eventhandling:
+#    processors:
+#      kafka-group:
+#        source: kafkaMessageSource
+#        mode: subscribing
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: kafka-axon-example
+    #    default-topic: axon-events
+    producer:
+      event-processor-mode: subscribing
+    #      retries: 5
+    #      bootstrap-servers: localhost:9092
+    #      transaction-id-prefix: dtx
+    consumer:
+      #      group-id: dgroup
+      #      bootstrap-servers: localhost:9092
+      event-processor-mode: subscribing
+  distributed:
+    enabled: true
+  serializer:
+    messages: jackson
+    events: jackson
+    general: jackson
