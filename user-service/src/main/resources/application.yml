@@ -15,7 +15,7 @@ axon:
 #        mode: tracking
   kafka:
     bootstrap-servers: localhost:9092
-    client-id: kafka-axon-example
+    client-id: userservice
 #    default-topic: axon-events
     producer:
       event-processor-mode: subscribing
@@ -26,6 +26,10 @@ axon:
 #      group-id: dgroup
 #      bootstrap-servers: localhost:9092
       event-processor-mode: subscribing
+      #enable-auto-commit: true
+      #auto-commit-interval: 3000
+      properties:
+        group-id: userservice
   distributed:
     enabled: true
   serializer:

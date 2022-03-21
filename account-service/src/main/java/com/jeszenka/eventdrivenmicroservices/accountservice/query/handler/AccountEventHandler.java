@@ -5,8 +5,12 @@ import com.jeszenka.eventdrivenmicroservices.accountservice.query.queries.FindAl
 import com.jeszenka.eventdrivenmicroservices.events.events.AccountCreatedEvent;
 import com.jeszenka.eventdrivenmicroservices.events.events.AccountUpdatedEvent;
 import org.axonframework.config.ProcessingGroup;
+import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.GenericDomainEventMessage;
+import org.axonframework.extensions.kafka.eventhandling.producer.KafkaEventPublisher;
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,10 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@ProcessingGroup("kafka-group")
+@ProcessingGroup("accountservice")
 public class AccountEventHandler {
 
 	private final Map<String, Account> accounts = new HashMap<>();
+
+	@Autowired
+	private EventBus eventBus;
 
 	@EventHandler
 	public void on(AccountCreatedEvent event) {

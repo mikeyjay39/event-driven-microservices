@@ -6,6 +6,7 @@ import com.jeszenka.eventdrivenmicroservices.userservice.query.model.Account;
 import com.jeszenka.eventdrivenmicroservices.userservice.query.queries.FindAllAccountsQuery;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.extensions.kafka.eventhandling.producer.KafkaEventPublisher;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@ProcessingGroup("kafka-group")
+@ProcessingGroup("userservice")
 public class AccountEventHandler {
 
 	private final Map<String, Account> accounts = new HashMap<>();
