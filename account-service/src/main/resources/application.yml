@@ -5,26 +5,15 @@ tenants:
   {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant2", driver:"org.postgresql.Driver"}
   }'
 axon:
-#  eventhandling:
-#    processors:
-#      kafka-group:
-#        source: kafkaMessageSource
-#        mode: subscribing
+  axonserver:
+    enabled: false
   kafka:
     bootstrap-servers: localhost:9092
     client-id: accountservice
-    #    default-topic: axon-events
     producer:
       event-processor-mode: subscribing
-    #      retries: 5
-    #      bootstrap-servers: localhost:9092
-    #      transaction-id-prefix: dtx
     consumer:
-      #      group-id: dgroup
-      #      bootstrap-servers: localhost:9092
       event-processor-mode: subscribing
-      #enable-auto-commit: true
-      #auto-commit-interval: 3000
       properties:
         group-id: accountservice
   distributed:
