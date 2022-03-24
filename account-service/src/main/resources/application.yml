@@ -4,3 +4,27 @@ tenants:
   tenant2:
   {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant2", driver:"org.postgresql.Driver"}
   }'
+axon:
+  axonserver:
+    enabled: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: accountservice
+    producer:
+      event-processor-mode: subscribing
+    consumer:
+      event-processor-mode: subscribing
+  distributed:
+    enabled: true
+  serializer:
+    messages: jackson
+    events: jackson
+    general: jackson
+logging:
+  level:
+    org:
+      apache:
+        kafka: INFO
+kafka:
+  topics: accounts
+  publish-topic: accounts
