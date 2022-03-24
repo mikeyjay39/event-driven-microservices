@@ -1,0 +1,1 @@
+docker exec broker kafka-consumer-groups --bootstrap-server broker:9092 --list

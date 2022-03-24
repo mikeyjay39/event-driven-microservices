@@ -11,6 +11,9 @@ import org.axonframework.extensions.kafka.eventhandling.consumer.AsyncFetcher;
 import org.axonframework.extensions.kafka.eventhandling.consumer.ConsumerFactory;
 import org.axonframework.extensions.kafka.eventhandling.consumer.DefaultConsumerFactory;
 import org.axonframework.extensions.kafka.eventhandling.consumer.Fetcher;
+import org.axonframework.extensions.kafka.eventhandling.consumer.streamable.KafkaEventMessage;
+import org.axonframework.extensions.kafka.eventhandling.consumer.streamable.SortedKafkaMessageBuffer;
+import org.axonframework.extensions.kafka.eventhandling.consumer.streamable.StreamableKafkaMessageSource;
 import org.axonframework.extensions.kafka.eventhandling.consumer.subscribable.SubscribableKafkaMessageSource;
 import org.axonframework.extensions.kafka.eventhandling.producer.DefaultProducerFactory;
 import org.axonframework.extensions.kafka.eventhandling.producer.KafkaEventPublisher;
@@ -21,15 +24,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class KafkaConfig {
 
-	@Autowired
-	private EventProcessingConfigurer eventProcessingConfigurer;
+	/*@Autowired
+	private EventProcessingConfigurer eventProcessingConfigurer;*/
 
 	private String groupId = "accountservice";
 
-	private String processorName = "accountservice";
+	private String processorName = "com.jeszenka.eventdrivenmicroservices.accountservice.query.handler";
 
 
 	@Bean
@@ -58,11 +63,12 @@ public class KafkaConfig {
 				.kafkaPublisher(kafkaPublisher)             // Hard requirement
 				.build();
 
-		registerPublisherToEventProcessor(eventProcessingConfigurer, kafkaEventPublisher);
+		//registerPublisherToEventProcessor(eventProcessingConfigurer, kafkaEventPublisher);
 		return kafkaEventPublisher;
 	}
 
-	private void registerPublisherToEventProcessor(EventProcessingConfigurer eventProcessingConfigurer,
+	@Autowired
+	public void registerPublisherToEventProcessor(EventProcessingConfigurer eventProcessingConfigurer,
 												   KafkaEventPublisher<String, byte[]> kafkaEventPublisher) {
 		String processingGroup = KafkaEventPublisher.DEFAULT_PROCESSING_GROUP;
 		eventProcessingConfigurer.registerEventHandler(configuration -> kafkaEventPublisher)
@@ -92,6 +98,36 @@ public class KafkaConfig {
 		return kafkaMessageSourceConfigurer;
 	}
 
+	/*@Bean
+	public StreamableKafkaMessageSource<String, byte[]> streamableKafkaMessageSource(//List<String> topics,
+																					 //String groupIdPrefix,
+																					 //Supplier<String> groupIdSuffixFactory,
+																					 ConsumerFactory<String, byte[]> consumerFactory,
+																					 Fetcher<String, byte[], KafkaEventMessage> fetcher,
+																					 KafkaMessageConverter<String, byte[]> messageConverter
+																					 //int bufferCapacity
+	) {
+		return StreamableKafkaMessageSource.<String, byte[]>builder()
+				.topics(List.of("topic1"))                                                 // Defaults to a collection of "Axon.Events"
+				.groupIdPrefix(groupId)                                   // Defaults to "Axon.Streamable.Consumer-"
+				//.groupIdSuffixFactory(groupIdSuffixFactory)                     // Defaults to a random UUID
+				.consumerFactory(consumerFactory)                               // Hard requirement
+				.fetcher(fetcher)                                               // Hard requirement
+				.messageConverter(messageConverter)                             // Defaults to a "DefaultKafkaMessageConverter"
+				.bufferFactory(
+						() -> new SortedKafkaMessageBuffer<>(1000))   // Defaults to a "SortedKafkaMessageBuffer" with a buffer capacity of "1000"
+				.build();
+	}
+
+	@Autowired
+	public void configureStreamableKafkaSource(EventProcessingConfigurer eventProcessingConfigurer,
+											   StreamableKafkaMessageSource<String, byte[]> streamableKafkaMessageSource) {
+		eventProcessingConfigurer.registerTrackingEventProcessor(
+				processorName,
+				configuration -> streamableKafkaMessageSource
+		);
+	}*/
+
 	@Bean
 	public SubscribableKafkaMessageSource<String, byte[]> subscribableKafkaMessageSource(//List<String> topics,
 																						 //String groupId,
@@ -101,16 +137,25 @@ public class KafkaConfig {
 																						 //int consumerCount,
 																						 KafkaMessageSourceConfigurer kafkaMessageSourceConfigurer) {
 		SubscribableKafkaMessageSource<String, byte[]> subscribableKafkaMessageSource = SubscribableKafkaMessageSource.<String, byte[]>builder()
+				.topics(List.of("topic1"))
 				.groupId(groupId)                   // Hard requirement
 				.consumerFactory(consumerFactory)   // Hard requirement
 				.fetcher(fetcher)                   // Hard requirement
 				.messageConverter(messageConverter) // Defaults to a "DefaultKafkaMessageConverter"
-				.autoStart()
 				.build();
 		// Registering the source is required to tie into the Configurers lifecycle to start the source at the right stage
 		kafkaMessageSourceConfigurer.configureSubscribableSource(configuration -> subscribableKafkaMessageSource);
-		this.configureSubscribableKafkaSource(eventProcessingConfigurer, processorName, subscribableKafkaMessageSource);
 		return subscribableKafkaMessageSource;
+	}
+
+	@Autowired
+	public void configureSubscribableKafkaSource(EventProcessingConfigurer eventProcessingConfigurer,
+												 SubscribableKafkaMessageSource<String, byte[]> subscribableKafkaMessageSource) {
+		eventProcessingConfigurer.assignProcessingGroup(groupId, processorName);
+		eventProcessingConfigurer.registerSubscribingEventProcessor(
+				processorName,
+				configuration -> subscribableKafkaMessageSource
+		);
 	}
 
 	@Bean
@@ -122,14 +167,7 @@ public class KafkaConfig {
 	}
 
 
-	private void configureSubscribableKafkaSource(EventProcessingConfigurer eventProcessingConfigurer,
-												  String processorName,
-												  SubscribableKafkaMessageSource<String, byte[]> subscribableKafkaMessageSource) {
-		eventProcessingConfigurer.registerSubscribingEventProcessor(
-				processorName,
-				configuration -> subscribableKafkaMessageSource
-		);
-	}
+
 
 
 }

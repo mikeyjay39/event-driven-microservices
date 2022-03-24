@@ -1,9 +1,15 @@
-tenants:
-  datasource: '{tenant1:
-  {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant1", driver:"org.postgresql.Driver"},
-  tenant2:
-  {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant2", driver:"org.postgresql.Driver"}
-  }'
+#tenants:
+#  datasource: '{tenant1:
+#  {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant1", driver:"org.postgresql.Driver"},
+#  tenant2:
+#  {username:"postgres", password:"password", url:"jdbc:postgresql://localhost:5432/tenant2", driver:"org.postgresql.Driver"}
+#  }'
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tenant1
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
 axon:
   axonserver:
     enabled: false
@@ -14,11 +20,16 @@ axon:
       event-processor-mode: subscribing
     consumer:
       event-processor-mode: subscribing
-      properties:
-        group-id: accountservice
+      #properties:
+      #  group-id: accountservice
   distributed:
     enabled: true
   serializer:
     messages: jackson
     events: jackson
     general: jackson
+logging:
+  level:
+    org:
+      apache:
+        kafka: INFO
