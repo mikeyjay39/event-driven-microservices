@@ -33,11 +33,6 @@ public class AccountEventHandler {
 				event.getUserId()));
 	}
 
-	/*@KafkaListener(topics = "topic1", groupId = "userservice")
-	public void listen(ConsumerRecord<String, String> event) {
-		log.info("Received message from account-service: {}", event);
-	}*/
-
 	@EventHandler
 	public void on(AccountUpdatedEvent event) {
 		accounts.computeIfPresent(event.getAccountNumber(), (accountNo, account) -> {
