@@ -5,6 +5,7 @@ import com.jeszenka.eventdrivenmicroservices.accountservice.command.commands.Upd
 import com.jeszenka.eventdrivenmicroservices.accountservice.query.model.Account;
 import com.jeszenka.eventdrivenmicroservices.accountservice.query.queries.FindAllAccountsQuery;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.EventProcessingConfiguration;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -24,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/account")
+@Slf4j
 public class AccountController {
 
 	private final CommandGateway commandGateway;
@@ -32,11 +34,13 @@ public class AccountController {
 
 	@GetMapping("/all")
 	public CompletableFuture<List<Account>> getAllAccounts() {
+		log.info("Request for accounts.");
 		return queryGateway.query(new FindAllAccountsQuery(), ResponseTypes.multipleInstancesOf(Account.class));
 	}
 
 	@PostMapping("/{userId}")
 	public CompletableFuture<String> createAccount(@PathVariable("userId") String userId) {
+		log.info("Creating account.");
 		return commandGateway.send(new CreateAccountCommand(UUID.randomUUID().toString(), BigDecimal.ZERO, userId));
 	}
 
