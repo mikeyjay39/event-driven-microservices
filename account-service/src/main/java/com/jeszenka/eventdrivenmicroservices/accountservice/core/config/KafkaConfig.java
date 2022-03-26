@@ -129,6 +129,7 @@ public class KafkaConfig {
 		JacksonSerializer serializer = JacksonSerializer.defaultSerializer();
 		return DefaultKafkaMessageConverter.builder()
 				.serializer(serializer)
+				.
 				.build();
 	}
 
