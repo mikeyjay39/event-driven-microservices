@@ -1,4 +1,4 @@
-package com.jeszenka.eventdrivenmicroservices.userservice.core.logging;
+package com.jeszenka.eventdrivenmicroservices.accountservice.core.logging;
 
 import brave.Tracer;
 import brave.Tracing;

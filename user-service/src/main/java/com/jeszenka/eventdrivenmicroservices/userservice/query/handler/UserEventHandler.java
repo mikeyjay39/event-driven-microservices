@@ -26,6 +26,7 @@ public class UserEventHandler {
 
 	@QueryHandler
 	public UserDto handle(FindUserQuery query) {
+		log.info("Getting user {}", query.getUserName());
 		return userAggregateRepository.findByUserName(query.getUserName());
 	}
 }

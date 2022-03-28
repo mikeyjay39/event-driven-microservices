@@ -4,6 +4,7 @@ import com.jeszenka.eventdrivenmicroservices.accountservice.query.handler.Accoun
 import org.axonframework.config.Configurer;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.eventhandling.EventMessage;
+import org.axonframework.eventhandling.async.SequentialPerAggregatePolicy;
 import org.axonframework.extensions.kafka.KafkaProperties;
 import org.axonframework.extensions.kafka.configuration.KafkaMessageSourceConfigurer;
 import org.axonframework.extensions.kafka.eventhandling.DefaultKafkaMessageConverter;
@@ -129,7 +130,7 @@ public class KafkaConfig {
 		JacksonSerializer serializer = JacksonSerializer.defaultSerializer();
 		return DefaultKafkaMessageConverter.builder()
 				.serializer(serializer)
-				.
+				.sequencingPolicy(SequentialPerAggregatePolicy.instance())
 				.build();
 	}
 
