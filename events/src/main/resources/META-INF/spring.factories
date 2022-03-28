@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.jeszenka.eventdrivenmicroservices.events.logging.LoggingConfig
