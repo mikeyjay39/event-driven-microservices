@@ -2,7 +2,6 @@ package com.jeszenka.eventdrivenmicroservices.events.logging;
 
 import brave.Tracer;
 import brave.Tracing;
-import com.jeszenka.eventdrivenmicroservices.events.logging.LoggingAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
